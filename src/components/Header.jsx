@@ -2,9 +2,9 @@ import { useState } from 'react';
 import { PROFESSIONS, createCharacter, generateRandomName } from '../data/gameData';
 import './Header.css';
 
-export default function Header({ 
+export default function Header({
   characters, activeCharacterId, onSelect, onAdd, onExport, onImport,
-  showNewForm, setShowNewForm 
+  showNewForm, setShowNewForm
 }) {
   const [newName, setNewName] = useState('');
   const [newProfession, setNewProfession] = useState('Warrior');
@@ -48,32 +48,36 @@ export default function Header({
           </div>
         </div>
 
-        <div className="header-actions">
-          {characters.length > 0 && (
-            <select
-              id="character-select"
-              className="char-select"
-              value={activeCharacterId || ''}
-              onChange={(e) => onSelect(e.target.value)}
-            >
-              {characters.map(c => (
-                <option key={c.id} value={c.id}>
-                  {c.name} — {c.profession} (Rank {c.rank})
-                </option>
-              ))}
-            </select>
-          )}
-          <button className="btn btn-gold" id="btn-new-character" onClick={() => setShowNewForm(!showNewForm)}>
-            {showNewForm ? '✕' : '＋'} {showNewForm ? 'Cancel' : 'New Character'}
-          </button>
-          {characters.length > 0 && (
-            <button className="btn btn-secondary btn-sm" id="btn-export" onClick={onExport} title="Export backup">
-              💾
+        <div className="header-actions" style={{ flexDirection: 'column', alignItems: 'flex-end', gap: '8px' }}>
+          <div style={{ display: 'flex', gap: '8px', flexWrap: 'nowrap', width: '100%', justifyContent: 'flex-end' }}>
+            {characters.length > 0 && (
+              <select
+                id="character-select"
+                className="char-select"
+                value={activeCharacterId || ''}
+                onChange={(e) => onSelect(e.target.value)}
+              >
+                {characters.map(c => (
+                  <option key={c.id} value={c.id}>
+                    {c.name} — {c.profession} (Rank {c.rank})
+                  </option>
+                ))}
+              </select>
+            )}
+            <button className="btn btn-gold" id="btn-new-character" onClick={() => setShowNewForm(!showNewForm)}>
+              {showNewForm ? '✕' : '＋'} {showNewForm ? 'Cancel' : 'New Character'}
             </button>
-          )}
-          <button className="btn btn-secondary btn-sm" id="btn-import" onClick={handleImportClick} title="Import backup">
-            📂
-          </button>
+          </div>
+          <div style={{ display: 'flex', gap: '8px' }}>
+            {characters.length > 0 && (
+              <button className="btn btn-secondary btn-sm" id="btn-export" onClick={onExport} title="Export backup">
+                💾 Export
+              </button>
+            )}
+            <button className="btn btn-secondary btn-sm" id="btn-import" onClick={handleImportClick} title="Import backup">
+              📂 Import
+            </button>
+          </div>
         </div>
       </div>
 
@@ -88,9 +92,9 @@ export default function Header({
               onChange={(e) => setNewName(e.target.value)}
               autoFocus
             />
-            <button 
-              type="button" 
-              className="btn btn-secondary btn-icon" 
+            <button
+              type="button"
+              className="btn btn-secondary btn-icon"
               onClick={handleRandomName}
               title="Generate random name"
               aria-label="Random name"

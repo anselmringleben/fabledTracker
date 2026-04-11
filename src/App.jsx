@@ -80,9 +80,9 @@ function App() {
                 placeholder="Add item…"
               />
 
-              <CodewordsPanel 
-                character={activeCharacter} 
-                onToggle={toggleInList} 
+              <CodewordsPanel
+                character={activeCharacter}
+                onToggle={toggleInList}
               />
 
               <ListCard
@@ -115,6 +115,15 @@ function App() {
 
       <footer className="app-footer" id="app-footer">
         <p>Fabled Lands Tracker — Data stored locally on your device</p>
+        <p className="attribution" style={{
+          fontSize: '0.75rem',
+          opacity: 0.7,
+          maxWidth: '600px',
+          margin: '0 auto 12px auto',
+          lineHeight: '1.4'
+        }}>
+          The <strong>Fabled Lands</strong> gamebook series was created by Dave Morris and Jamie Thomson. All rights to the Fabled Lands universe belong to their respective creators and publishers. This page is an independent, fan-made tool.
+        </p>
       </footer>
     </div>
   );
