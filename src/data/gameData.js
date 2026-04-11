@@ -96,7 +96,7 @@ export function createCharacter(name = '', profession = 'Warrior') {
     scouting: scores.scouting,
     thievery: scores.thievery,
     shards: 16,
-    possessions: ['sword', 'leather jerkin (Defence +1)', 'map'],
+    possessions: ['Sword', 'Leather Jerkin (Defence +1)', 'Map'],
     codewords: [],
     blessings: [],
     titles: [],

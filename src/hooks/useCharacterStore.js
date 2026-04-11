@@ -104,6 +104,18 @@ export function useCharacterStore() {
     }));
   }, []);
 
+  const updateInList = useCallback((charId, field, index, newValue) => {
+    setState(prev => ({
+      ...prev,
+      characters: prev.characters.map(c => {
+        if (c.id !== charId) return c;
+        const list = [...(c[field] || [])];
+        list[index] = newValue;
+        return { ...c, [field]: list, updatedAt: new Date().toISOString() };
+      }),
+    }));
+  }, []);
+
   const toggleInList = useCallback((charId, field, item) => {
     setState(prev => ({
       ...prev,
@@ -154,6 +166,7 @@ export function useCharacterStore() {
     setActiveCharacter,
     addToList,
     removeFromList,
+    updateInList,
     toggleInList,
     exportData,
     importData,

@@ -3,6 +3,33 @@
   flex-direction: column;
   gap: var(--space-lg);
 }
+.progress-fields {
+  display: flex;
+  gap: var(--space-sm);
+  flex-wrap: wrap;
+}
+
+.progress-field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xs);
+  flex: 1;
+  min-width: 140px;
+}
+
+.progress-field label {
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--color-text-muted);
+  font-weight: 500;
+}
+
+.progress-field textarea {
+  resize: vertical;
+  min-height: 80px;
+  line-height: 1.5;
+}
 
 /* Quick log */
 .journey-quick-log {
@@ -18,29 +45,6 @@
 .journey-quick-hint {
   font-size: 0.8rem;
   color: var(--color-text-muted);
-}
-
-/* Manual form */
-.journey-manual-form {
-  display: flex;
-  gap: var(--space-sm);
-  flex-wrap: wrap;
-}
-
-.journey-book-select {
-  flex: 1;
-  min-width: 160px;
-}
-
-.journey-section-input {
-  width: 64px;
-  flex: 0 0 64px;
-  text-align: center;
-}
-
-.journey-note-input {
-  flex: 2;
-  min-width: 120px;
 }
 
 /* Summary */

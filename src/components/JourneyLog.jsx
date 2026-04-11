@@ -3,33 +3,26 @@ import { BOOKS } from '../data/gameData';
 import './JourneyLog.css';
 
 export default function JourneyLog({ character, onUpdate, onAddEntry, onRemoveEntry }) {
-  const [manualBook, setManualBook] = useState(character.currentBook);
-  const [manualSection, setManualSection] = useState('');
-  const [note, setNote] = useState('');
+  const [quickNote, setQuickNote] = useState('');
+  const [editingIndex, setEditingIndex] = useState(null);
+  const [editNote, setEditNote] = useState('');
 
   function handleLogCurrent() {
     const entry = {
       book: character.currentBook,
       section: character.currentSection,
-      note: '',
+      note: quickNote.trim(),
       timestamp: new Date().toISOString(),
     };
     onAddEntry(character.id, 'journeyLog', entry);
+    setQuickNote('');
   }
 
-  function handleLogManual(e) {
-    e.preventDefault();
-    const section = parseInt(manualSection, 10);
-    if (isNaN(section) || section < 1) return;
-    const entry = {
-      book: manualBook,
-      section,
-      note: note.trim(),
-      timestamp: new Date().toISOString(),
-    };
-    onAddEntry(character.id, 'journeyLog', entry);
-    setManualSection('');
-    setNote('');
+  function saveNoteUpdate(realIndex) {
+    const updatedLog = [...(character.journeyLog || [])];
+    updatedLog[realIndex] = { ...updatedLog[realIndex], note: editNote.trim() };
+    onUpdate(character.id, { journeyLog: updatedLog });
+    setEditingIndex(null);
   }
 
   const log = character.journeyLog || [];
@@ -45,61 +38,95 @@ export default function JourneyLog({ character, onUpdate, onAddEntry, onRemoveEn
   return (
     <div className="journey-log card" id="journey-log">
       <div className="card-header">
-        <span className="icon">🧭</span>
-        <h2>Journey Log</h2>
+        <span className="icon">📖</span>
+        <h2>Adventure Log</h2>
         <span className="list-count">{log.length} entries</span>
       </div>
 
-      {/* Quick log button */}
-      <div className="journey-quick-log">
-        <button
-          className="btn btn-primary"
-          onClick={handleLogCurrent}
-          id="btn-log-current"
-        >
-          📍 Log Current Section
-        </button>
-        <span className="journey-quick-hint">
-          Book {character.currentBook}, §{character.currentSection}
-        </span>
+      {/* Progress & Current Location */}
+      <div className="progress-fields">
+        <div className="progress-field">
+          <label htmlFor="progress-book">Current Book</label>
+          <select
+            id="progress-book"
+            value={character.currentBook}
+            onChange={(e) => {
+              const num = parseInt(e.target.value, 10);
+              if (!isNaN(num)) onUpdate(character.id, { currentBook: num });
+            }}
+          >
+            {BOOKS.map(b => (
+              <option key={b.number} value={b.number}>
+                {b.number}. {b.title}
+              </option>
+            ))}
+          </select>
+        </div>
+
+        <div className="progress-field">
+          <label htmlFor="progress-section">Current Section</label>
+          <div style={{ display: 'flex', gap: 'var(--space-sm)' }}>
+            <input
+              id="progress-section"
+              type="number"
+              min="1"
+              value={character.currentSection}
+              style={{ width: '80px', flex: '0 0 80px', textAlign: 'center' }}
+              onChange={(e) => {
+                const num = parseInt(e.target.value, 10);
+                if (!isNaN(num) && num >= 0) onUpdate(character.id, { currentSection: num });
+              }}
+            />
+            <button
+              className="btn btn-primary"
+              onClick={handleLogCurrent}
+              id="btn-log-current"
+              style={{ flex: 1 }}
+            >
+              📍 Log Location
+            </button>
+          </div>
+          <input 
+            type="text" 
+            placeholder="Note for this timeline entry (optional)" 
+            value={quickNote} 
+            onChange={(e) => setQuickNote(e.target.value)} 
+            style={{ marginTop: '4px' }}
+          />
+        </div>
       </div>
 
-      {/* Manual entry form */}
-      <form className="journey-manual-form" onSubmit={handleLogManual}>
-        <select
-          value={manualBook}
-          onChange={(e) => setManualBook(parseInt(e.target.value, 10))}
-          className="journey-book-select"
-        >
-          {BOOKS.map(b => (
-            <option key={b.number} value={b.number}>
-              {b.number}. {b.title}
-            </option>
-          ))}
-        </select>
-        <input
-          type="number"
-          min="1"
-          placeholder="§"
-          value={manualSection}
-          onChange={(e) => setManualSection(e.target.value)}
-          className="journey-section-input"
-        />
-        <input
-          type="text"
-          placeholder="Note (optional)"
-          value={note}
-          onChange={(e) => setNote(e.target.value)}
-          className="journey-note-input"
-        />
-        <button
-          className="btn btn-secondary btn-sm"
-          type="submit"
-          disabled={!manualSection}
-        >
-          Add
-        </button>
-      </form>
+      <div className="progress-fields" style={{ marginTop: 'var(--space-md)' }}>
+        <div className="progress-field">
+          <label htmlFor="progress-resurrection">Resurrection Arrangement</label>
+          <input
+            id="progress-resurrection"
+            type="text"
+            placeholder="e.g. Temple of Dorin, Yellowport"
+            value={character.resurrection}
+            onChange={(e) => onUpdate(character.id, { resurrection: e.target.value })}
+          />
+        </div>
+
+        <div className="progress-field">
+          <label htmlFor="progress-notes">Quest Notes</label>
+          <textarea
+            id="progress-notes"
+            rows="3"
+            placeholder="Reminders, plans, hints…"
+            value={character.notes}
+            onChange={(e) => onUpdate(character.id, { notes: e.target.value })}
+            style={{ resize: 'vertical', minHeight: '60px', lineHeight: '1.5' }}
+          />
+        </div>
+      </div>
+
+      <hr style={{ border: 0, borderTop: '1px solid var(--color-border-subtle)', margin: 'var(--space-lg) 0' }} />
+
+      <div className="card-header" style={{ marginBottom: 'var(--space-md)' }}>
+        <span className="icon">📜</span>
+        <h2 style={{ fontSize: '0.9rem' }}>Timeline</h2>
+      </div>
 
       {/* Book visit summary */}
       {Object.keys(visitedByBook).length > 0 && (
@@ -143,12 +170,45 @@ export default function JourneyLog({ character, onUpdate, onAddEntry, onRemoveEn
                     <div className="journey-entry-header">
                       <span className="journey-entry-location">
                         <strong>Book {entry.book}</strong> §{entry.section}
+                        {editingIndex === realIndex ? (
+                          <form 
+                            onSubmit={(e) => { e.preventDefault(); saveNoteUpdate(realIndex); }}
+                            style={{ display: 'inline', marginLeft: '6px' }}
+                          >
+                            <input 
+                              type="text" 
+                              value={editNote} 
+                              onChange={(e) => setEditNote(e.target.value)} 
+                              autoFocus 
+                              onBlur={() => saveNoteUpdate(realIndex)}
+                              className="journey-note-inline-edit"
+                              style={{ 
+                                padding: '2px 6px', 
+                                fontSize: '0.75rem', 
+                                width: '140px',
+                                background: 'var(--color-bg-input)',
+                                border: '1px solid var(--color-accent)',
+                                borderRadius: 'var(--radius-sm)',
+                                color: 'var(--color-text-primary)'
+                              }}
+                            />
+                          </form>
+                        ) : (
+                          <span 
+                            className="journey-entry-note" 
+                            style={{ marginLeft: '6px', cursor: 'pointer' }}
+                            onClick={() => {
+                              setEditingIndex(realIndex);
+                              setEditNote(entry.note || '');
+                            }}
+                            title="Click to edit note"
+                          >
+                            {entry.note ? `— ${entry.note}` : <span style={{ opacity: 0.4, fontStyle: 'normal' }}> ✎ Add note</span>}
+                          </span>
+                        )}
                       </span>
                       <span className="journey-entry-time">{timeStr}</span>
                     </div>
-                    {entry.note && (
-                      <p className="journey-entry-note">{entry.note}</p>
-                    )}
                     <span className="journey-entry-book-name">
                       {bookMap[entry.book] || `Book ${entry.book}`}
                     </span>

@@ -5,7 +5,6 @@ import EmptyState from './components/EmptyState';
 import StatsPanel from './components/StatsPanel';
 import ListCard from './components/ListCard';
 import CodewordsPanel from './components/CodewordsPanel';
-import ProgressPanel from './components/ProgressPanel';
 import JourneyLog from './components/JourneyLog';
 import DangerZone from './components/DangerZone';
 import './App.css';
@@ -21,6 +20,7 @@ function App() {
     setActiveCharacter,
     addToList,
     removeFromList,
+    updateInList,
     toggleInList,
     exportData,
     importData,
@@ -57,7 +57,6 @@ function App() {
             <div className="tracker-column tracker-column-main">
               <StatsPanel character={activeCharacter} onUpdate={updateCharacter} />
 
-              <ProgressPanel character={activeCharacter} onUpdate={updateCharacter} />
 
               <JourneyLog
                 character={activeCharacter}
@@ -77,6 +76,7 @@ function App() {
                 maxItems={12}
                 onAdd={(item) => addToList(activeCharacter.id, 'possessions', item)}
                 onRemove={(index) => removeFromList(activeCharacter.id, 'possessions', index)}
+                onEdit={(index, newValue) => updateInList(activeCharacter.id, 'possessions', index, newValue)}
                 placeholder="Add item…"
               />
 
@@ -92,6 +92,7 @@ function App() {
                 items={activeCharacter.blessings}
                 onAdd={(item) => addToList(activeCharacter.id, 'blessings', item)}
                 onRemove={(index) => removeFromList(activeCharacter.id, 'blessings', index)}
+                onEdit={(index, newValue) => updateInList(activeCharacter.id, 'blessings', index, newValue)}
                 placeholder="Add blessing…"
               />
 
@@ -102,6 +103,7 @@ function App() {
                 items={activeCharacter.titles}
                 onAdd={(item) => addToList(activeCharacter.id, 'titles', item)}
                 onRemove={(index) => removeFromList(activeCharacter.id, 'titles', index)}
+                onEdit={(index, newValue) => updateInList(activeCharacter.id, 'titles', index, newValue)}
                 placeholder="Add title…"
               />
 

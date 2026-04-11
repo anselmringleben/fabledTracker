@@ -22,7 +22,7 @@
   justify-content: space-between;
   align-items: center;
   padding: var(--space-md);
-  background: var(--color-surface);
+  background: transparent;
   border: none;
   cursor: pointer;
   text-align: left;
@@ -30,7 +30,7 @@
 }
 
 .cw-book-header:hover {
-  background: var(--color-bg-light);
+  background: var(--color-bg-card-hover);
 }
 
 .cw-book-header.expanded {
@@ -54,7 +54,7 @@
 .cw-book-name {
   font-family: 'Inter', sans-serif;
   font-size: 0.95rem;
-  color: var(--color-text);
+  color: var(--color-text-secondary);
   font-weight: 500;
 }
 
@@ -100,17 +100,17 @@
 }
 
 .codeword-item:hover {
-  background: var(--color-bg-light);
+  background: var(--color-bg-card-hover);
 }
 
 .codeword-item.active {
-  color: var(--color-text);
+  color: var(--color-text-primary);
 }
 
 .codeword-item input[type="checkbox"] {
   width: 18px;
   height: 18px;
-  accent-color: var(--color-primary);
+  accent-color: var(--color-accent);
   cursor: pointer;
 }
 
@@ -120,7 +120,7 @@
 }
 
 .codeword-item.active .codeword-text {
-  color: var(--color-primary);
+  color: var(--color-accent);
   font-weight: 500;
 }
 
