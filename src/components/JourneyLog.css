@@ -1,0 +1,226 @@
+.journey-log {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-lg);
+}
+
+/* Quick log */
+.journey-quick-log {
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+  padding: var(--space-md);
+  background: linear-gradient(135deg, rgba(139, 92, 246, 0.08), rgba(139, 92, 246, 0.02));
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+}
+
+.journey-quick-hint {
+  font-size: 0.8rem;
+  color: var(--color-text-muted);
+}
+
+/* Manual form */
+.journey-manual-form {
+  display: flex;
+  gap: var(--space-sm);
+  flex-wrap: wrap;
+}
+
+.journey-book-select {
+  flex: 1;
+  min-width: 160px;
+}
+
+.journey-section-input {
+  width: 64px;
+  flex: 0 0 64px;
+  text-align: center;
+}
+
+.journey-note-input {
+  flex: 2;
+  min-width: 120px;
+}
+
+/* Summary */
+.journey-summary {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+}
+
+.journey-summary-title,
+.journey-entries-title {
+  font-family: var(--font-body);
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--color-text-muted);
+  font-weight: 600;
+}
+
+.journey-summary-books {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.journey-summary-book {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  padding: var(--space-sm) var(--space-md);
+  background: var(--color-bg-input);
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--color-border-subtle);
+  font-size: 0.8rem;
+}
+
+.journey-summary-book-num {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  background: linear-gradient(135deg, var(--color-accent), #7c3aed);
+  color: white;
+  border-radius: 4px;
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 0.7rem;
+  flex-shrink: 0;
+}
+
+.journey-summary-book-title {
+  flex: 1;
+  color: var(--color-text-secondary);
+}
+
+.journey-summary-book-count {
+  font-size: 0.7rem;
+  color: var(--color-accent-light);
+  font-weight: 600;
+  background: var(--color-accent-glow);
+  padding: 2px 8px;
+  border-radius: 10px;
+}
+
+/* Timeline */
+.journey-entries {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+}
+
+.journey-timeline {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  max-height: 360px;
+  overflow-y: auto;
+  padding-right: var(--space-sm);
+}
+
+.journey-entry {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-md);
+  padding: var(--space-sm) 0;
+  position: relative;
+}
+
+.journey-entry-marker {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex-shrink: 0;
+  padding-top: 4px;
+}
+
+.journey-entry-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--color-accent);
+  box-shadow: 0 0 8px var(--color-accent-glow);
+  flex-shrink: 0;
+}
+
+.journey-entry:first-child .journey-entry-dot {
+  background: var(--color-gold);
+  box-shadow: 0 0 8px var(--color-gold-glow);
+}
+
+.journey-entry-line {
+  width: 2px;
+  flex: 1;
+  min-height: 20px;
+  background: var(--color-border);
+  margin-top: 4px;
+}
+
+.journey-entry-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.journey-entry-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-sm);
+}
+
+.journey-entry-location {
+  font-size: 0.85rem;
+  color: var(--color-text-primary);
+}
+
+.journey-entry-time {
+  font-size: 0.65rem;
+  color: var(--color-text-muted);
+  white-space: nowrap;
+}
+
+.journey-entry-note {
+  font-size: 0.78rem;
+  color: var(--color-text-secondary);
+  font-style: italic;
+}
+
+.journey-entry-book-name {
+  font-size: 0.65rem;
+  color: var(--color-text-muted);
+}
+
+.journey-entry-remove {
+  opacity: 0;
+  transition: opacity var(--transition-fast);
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.journey-entry:hover .journey-entry-remove {
+  opacity: 1;
+}
+
+@media (max-width: 480px) {
+  .journey-quick-log {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .journey-manual-form {
+    flex-direction: column;
+  }
+
+  .journey-section-input {
+    width: 100%;
+    flex: 1;
+  }
+}
