@@ -52,6 +52,10 @@ Your data never leaves your device. Everything is saved in your browser's local 
 
 Contributions are welcome! Feel free to open an issue or submit a pull request.
 
+## Attribution
+
+The **Fabled Lands** gamebook series was created and authored by **Dave Morris** and **Jamie Thomson**. All rights to the Fabled Lands universe, world design, and intellectual property belong to their respective creators and publishers. This tracker is an independent, fan-made, open-source tool and is not officially affiliated with or endorsed by the authors.
+
 ## License
 
 See [LICENSE](LICENSE) for details.
