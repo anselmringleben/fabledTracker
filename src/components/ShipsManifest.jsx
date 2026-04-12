@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { SHIP_TYPES, CREW_QUALITIES } from '../data/gameData';
 import './ShipsManifest.css';
 
-export default function ShipsManifest({ character, onAddToList, onUpdateInList, onRemoveFromList, onAddTimelineEntry }) {
+export default function ShipsManifest({ id, character, onAddToList, onUpdateInList, onRemoveFromList, onAddTimelineEntry }) {
   const [isAdding, setIsAdding] = useState(false);
   const [editingId, setEditingId] = useState(null);
 
@@ -83,7 +83,7 @@ export default function ShipsManifest({ character, onAddToList, onUpdateInList, 
   }
 
   return (
-    <div className="ships-manifest card" id="ships-card">
+    <div className="ships-manifest card section-anchor" id={id || "ships-card"}>
       <div className="card-header">
         <span className="icon">⛵</span>
         <h2>Ship's Manifest</h2>

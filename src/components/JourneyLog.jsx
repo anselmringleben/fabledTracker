@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { BOOKS } from '../data/gameData';
 import './JourneyLog.css';
 
-export default function JourneyLog({ character, onUpdate, onAddEntry, onRemoveEntry }) {
+export default function JourneyLog({ id, character, onUpdate, onAddEntry, onRemoveEntry }) {
   const [quickNote, setQuickNote] = useState('');
   const [editingIndex, setEditingIndex] = useState(null);
   const [editNote, setEditNote] = useState('');
@@ -36,7 +36,7 @@ export default function JourneyLog({ character, onUpdate, onAddEntry, onRemoveEn
   });
 
   return (
-    <div className="journey-log card" id="journey-log">
+    <div className="journey-log card section-anchor" id={id || "journey-log"}>
       <div className="card-header">
         <span className="icon">📖</span>
         <h2>Adventure Log</h2>

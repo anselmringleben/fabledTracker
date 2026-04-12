@@ -141,16 +141,51 @@
   font-family: var(--font-heading);
 }
 
-@media (max-width: 480px) {
-  .identity-group {
+@media (max-width: 768px) {
+  .progress-fields {
     flex-direction: column;
   }
 
+  .progress-field {
+    width: 100%;
+    min-width: 0;
+  }
+
+  .journey-quick-log {
+    flex-direction: column;
+    align-items: stretch;
+    text-align: center;
+  }
+
+  .journey-manual-form {
+    flex-direction: column;
+  }
+
+  .journey-section-input {
+    width: 100% !important;
+  }
+
+  .stat-group {
+    flex-direction: column;
+  }
+
+  .stat-field {
+    width: 100%;
+    flex: none;
+  }
+
   .stat-field-narrow {
-    flex: 1;
+    flex: none;
+    width: 100%;
   }
 
   .abilities-grid {
     grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 400px) {
+  .abilities-grid {
+    grid-template-columns: 1fr;
   }
 }

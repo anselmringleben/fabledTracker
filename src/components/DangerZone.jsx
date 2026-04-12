@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import './DangerZone.css';
 
-export default function DangerZone({ character, onDelete }) {
+export default function DangerZone({ id, character, onDelete }) {
   const [isConfirming, setIsConfirming] = useState(false);
   const [isExpanded, setIsExpanded] = useState(false);
 
@@ -10,7 +10,7 @@ export default function DangerZone({ character, onDelete }) {
   }
 
   return (
-    <div className="danger-zone card" id="danger-zone">
+    <div className="danger-zone card section-anchor" id={id || "danger-zone"}>
       <button 
         type="button" 
         className="card-header danger-header-btn" 

@@ -2,10 +2,17 @@ import { useState } from 'react';
 import { ABILITIES, PROFESSIONS, RANK_TITLES } from '../data/gameData';
 import './StatsPanel.css';
 
-export default function StatsPanel({ character, onUpdate, onAddTimelineEntry }) {
+export default function StatsPanel({ id, character, onUpdate, onAddTimelineEntry }) {
   const [diceResult, setDiceResult] = useState(null);
+  const [isRolling, setIsRolling] = useState(false);
+
+  function triggerRollAnimation() {
+    setIsRolling(true);
+    setTimeout(() => setIsRolling(false), 600);
+  }
 
   function handleDiceRoll() {
+    triggerRollAnimation();
     const d1 = Math.floor(Math.random() * 6) + 1;
     const d2 = Math.floor(Math.random() * 6) + 1;
     const total = d1 + d2;
@@ -23,6 +30,7 @@ export default function StatsPanel({ character, onUpdate, onAddTimelineEntry }) 
   }
 
   function handleAbilityRoll(abilityKey, abilityLabel) {
+    triggerRollAnimation();
     const d1 = Math.floor(Math.random() * 6) + 1;
     const d2 = Math.floor(Math.random() * 6) + 1;
     const roll = d1 + d2;
@@ -75,7 +83,7 @@ export default function StatsPanel({ character, onUpdate, onAddTimelineEntry }) 
                        'var(--color-danger)';
 
   return (
-    <div className="stats-panel card" id="stats-panel">
+    <div className="stats-panel card section-anchor" id={id || "stats-panel"}>
       <div className="card-header">
         <span className="icon">📋</span>
         <h2>Character Sheet</h2>
@@ -228,7 +236,7 @@ export default function StatsPanel({ character, onUpdate, onAddTimelineEntry }) 
         borderTop: '1px solid var(--color-border-subtle)'
       }}>
         <button 
-          className="btn btn-primary"
+          className={`btn btn-primary ${isRolling ? 'animate-roll' : ''}`}
           onClick={handleDiceRoll}
         >
           <span style={{ fontSize: '1.2rem', marginRight: '4px' }}>🎲</span> Roll 2d6

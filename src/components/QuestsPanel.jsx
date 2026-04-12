@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import './QuestsPanel.css';
 
-export default function QuestsPanel({ character, onAddToList, onUpdateInList, onRemoveFromList, onAddTimelineEntry }) {
+export default function QuestsPanel({ id, character, onAddToList, onUpdateInList, onRemoveFromList, onAddTimelineEntry }) {
   const [questText, setQuestText] = useState('');
   const [editingIndex, setEditingIndex] = useState(null);
   const [editValue, setEditValue] = useState('');
@@ -58,7 +58,7 @@ export default function QuestsPanel({ character, onAddToList, onUpdateInList, on
   }
 
   return (
-    <div className="quests-panel card" id="quests-card">
+    <div className="quests-panel card section-anchor" id={id || "quests-card"}>
       <div className="card-header">
         <span className="icon">🗺️</span>
         <h2>Quests & Tasks</h2>

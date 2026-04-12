@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { BOOKS, CODEWORDS_BY_BOOK } from '../data/gameData';
 import './CodewordsPanel.css';
 
-export default function CodewordsPanel({ character, onToggle }) {
+export default function CodewordsPanel({ id, character, onToggle }) {
   const [expandedBooks, setExpandedBooks] = useState({ 1: true }); // Default expand Book 1
   const characterCodewords = character.codewords || [];
 
@@ -19,7 +19,7 @@ export default function CodewordsPanel({ character, onToggle }) {
   const booksWithWords = BOOKS.filter(b => CODEWORDS_BY_BOOK[b.number] && CODEWORDS_BY_BOOK[b.number].length > 0);
 
   return (
-    <div className="codewords-panel card" id="codewords-card">
+    <div className="codewords-panel card section-anchor" id={id || "codewords-card"}>
       <div className="card-header">
         <span className="icon">🗝️</span>
         <h2>Codewords</h2>

@@ -9,6 +9,7 @@ import QuestsPanel from './components/QuestsPanel';
 import JourneyLog from './components/JourneyLog';
 import DangerZone from './components/DangerZone';
 import ShipsManifest from './components/ShipsManifest';
+import Navigation from './components/Navigation';
 import './App.css';
 
 function App() {
@@ -146,7 +147,7 @@ function App() {
   };
 
   return (
-    <div className="app" id="app">
+    <div className="app-container" id="app">
       <Header
         characters={characters}
         activeCharacterId={activeCharacterId}
@@ -162,26 +163,24 @@ function App() {
         {!activeCharacter ? (
           <EmptyState onCreateClick={handleEmptyCreate} />
         ) : (
-          <div className="tracker-layout animate-fade-in" key={activeCharacter.id}>
-            {/* Left column: Stats */}
-            <div className="tracker-column tracker-column-main">
+          <div className="main-layout animate-fade-in" key={activeCharacter.id}>
+            <Navigation />
+            <div className="content-area">
               <StatsPanel 
+                id="stats-card"
                 character={activeCharacter} 
                 onUpdate={updateCharacter} 
                 onAddTimelineEntry={addToList}
               />
 
-
               <JourneyLog
+                id="journey-card"
                 character={activeCharacter}
                 onUpdate={updateCharacter}
                 onAddEntry={addToList}
                 onRemoveEntry={removeFromList}
               />
-            </div>
 
-            {/* Right column: Lists */}
-            <div className="tracker-column tracker-column-side">
               <ListCard
                 id="possessions-card"
                 title="Possessions"
@@ -225,11 +224,13 @@ function App() {
               />
 
               <CodewordsPanel
+                id="codewords-card"
                 character={activeCharacter}
                 onToggle={handleCodewordToggle}
               />
 
               <QuestsPanel
+                id="quests-card"
                 character={activeCharacter}
                 onAddToList={addToList}
                 onUpdateInList={updateInList}
@@ -267,7 +268,11 @@ function App() {
                 placeholder="Add title…"
               />
 
-              <DangerZone character={activeCharacter} onDelete={deleteCharacter} />
+              <DangerZone 
+                id="notes-card"
+                character={activeCharacter} 
+                onDelete={deleteCharacter} 
+              />
             </div>
           </div>
         )}

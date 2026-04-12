@@ -85,25 +85,39 @@
 
   .header-top {
     flex-direction: column;
-    align-items: stretch;
+    align-items: center;
+    text-align: center;
+    gap: var(--space-md);
+  }
+
+  .header-brand {
+    flex-direction: column;
+    gap: var(--space-xs);
   }
 
   .header-actions {
-    flex-wrap: wrap;
+    width: 100%;
+    justify-content: center;
   }
 
   .char-select {
     min-width: 0;
     max-width: none;
-    flex: 1;
+    width: 100%;
   }
 
   .new-char-form {
     flex-direction: column;
+    gap: var(--space-sm);
+  }
+
+  .name-input-group {
+    width: 100%;
   }
 
   .new-char-form input,
   .new-char-form select {
-    max-width: 100%;
+    max-width: none;
+    width: 100%;
   }
 }
