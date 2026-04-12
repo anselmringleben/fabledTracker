@@ -3,12 +3,14 @@ import './Navigation.css';
 export default function Navigation() {
   const sections = [
     { id: 'stats-card', label: 'Stats & Rank', icon: '👤' },
+    { id: 'journey-card', label: 'Adventure Log', icon: '📖' },
     { id: 'possessions-card', label: 'Possessions', icon: '🎒' },
-    { id: 'codewords-card', label: 'Codewords', icon: '📜' },
-    { id: 'journey-card', label: 'Journey Log', icon: '🗺️' },
-    { id: 'quests-card', label: 'Quests', icon: '🎯' },
+    { id: 'codewords-card', label: 'Codewords', icon: '🗝️' },
+    { id: 'quests-card', label: 'Quests & Tasks', icon: '🗺️' },
+    { id: 'blessings-card', label: 'Blessings', icon: '✨' },
     { id: 'ships-card', label: 'Ships', icon: '⛵' },
-    { id: 'notes-card', label: 'Notes', icon: '✍️' },
+    { id: 'titles-card', label: 'Titles', icon: '👑' },
+    { id: 'notes-card', label: 'Danger Zone', icon: '⚠️' },
   ];
 
   const scrollToSection = (id) => {

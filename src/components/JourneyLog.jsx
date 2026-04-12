@@ -6,6 +6,7 @@ export default function JourneyLog({ id, character, onUpdate, onAddEntry, onRemo
   const [quickNote, setQuickNote] = useState('');
   const [editingIndex, setEditingIndex] = useState(null);
   const [editNote, setEditNote] = useState('');
+  const [isExpanded, setIsExpanded] = useState(true);
 
   function handleLogCurrent() {
     const entry = {
@@ -37,11 +38,21 @@ export default function JourneyLog({ id, character, onUpdate, onAddEntry, onRemo
 
   return (
     <div className="journey-log card section-anchor" id={id || "journey-log"}>
-      <div className="card-header">
-        <span className="icon">📖</span>
-        <h2>Adventure Log</h2>
-        <span className="list-count">{log.length} entries</span>
-      </div>
+      <button 
+        type="button"
+        className="card-header-btn" 
+        onClick={() => setIsExpanded(!isExpanded)}
+      >
+        <div className="card-header-main">
+          <span className="icon">📖</span>
+          <h2>Adventure Log</h2>
+          <span className="list-count">{log.length} entries</span>
+        </div>
+        <span className="collapse-icon">{isExpanded ? '▼' : '▶'}</span>
+      </button>
+
+      {isExpanded && (
+        <div className="card-content animate-fade-in">
 
       {/* Progress & Current Location */}
       <div className="progress-fields">
@@ -279,6 +290,8 @@ export default function JourneyLog({ id, character, onUpdate, onAddEntry, onRemo
               );
             })}
           </ol>
+        </div>
+      )}
         </div>
       )}
     </div>

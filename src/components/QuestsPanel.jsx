@@ -5,6 +5,7 @@ export default function QuestsPanel({ id, character, onAddToList, onUpdateInList
   const [questText, setQuestText] = useState('');
   const [editingIndex, setEditingIndex] = useState(null);
   const [editValue, setEditValue] = useState('');
+  const [isExpanded, setIsExpanded] = useState(true);
 
   const quests = character.quests || [];
 
@@ -59,11 +60,21 @@ export default function QuestsPanel({ id, character, onAddToList, onUpdateInList
 
   return (
     <div className="quests-panel card section-anchor" id={id || "quests-card"}>
-      <div className="card-header">
-        <span className="icon">🗺️</span>
-        <h2>Quests & Tasks</h2>
-        <span className="list-count">{quests.filter(q => !q.completed).length} active</span>
-      </div>
+      <button 
+        type="button"
+        className="card-header-btn" 
+        onClick={() => setIsExpanded(!isExpanded)}
+      >
+        <div className="card-header-main">
+          <span className="icon">🗺️</span>
+          <h2>Quests & Tasks</h2>
+          <span className="list-count">{quests.filter(q => !q.completed).length} active</span>
+        </div>
+        <span className="collapse-icon">{isExpanded ? '▼' : '▶'}</span>
+      </button>
+
+      {isExpanded && (
+        <div className="card-content animate-fade-in">
 
       <div className="quest-add-section">
         <div className="quest-origin">
@@ -150,6 +161,8 @@ export default function QuestsPanel({ id, character, onAddToList, onUpdateInList
             </li>
           ))}
         </ul>
+      )}
+        </div>
       )}
     </div>
   );

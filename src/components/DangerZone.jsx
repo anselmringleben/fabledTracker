@@ -13,12 +13,13 @@ export default function DangerZone({ id, character, onDelete }) {
     <div className="danger-zone card section-anchor" id={id || "danger-zone"}>
       <button 
         type="button" 
-        className="card-header danger-header-btn" 
+        className="card-header-btn" 
         onClick={() => setIsExpanded(!isExpanded)}
+        style={{ borderColor: 'var(--color-danger-glow)' }}
       >
-        <div className="danger-header-left">
+        <div className="card-header-main">
           <span className="icon">⚠️</span>
-          <h2>Danger Zone</h2>
+          <h2 style={{ color: 'var(--color-danger)' }}>Danger Zone</h2>
         </div>
         <span className="collapse-icon">{isExpanded ? '▼' : '▶'}</span>
       </button>

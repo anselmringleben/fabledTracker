@@ -4,6 +4,7 @@ import './CodewordsPanel.css';
 
 export default function CodewordsPanel({ id, character, onToggle }) {
   const [expandedBooks, setExpandedBooks] = useState({ 1: true }); // Default expand Book 1
+  const [isMainExpanded, setIsMainExpanded] = useState(true);
   const characterCodewords = character.codewords || [];
 
   const toggleBook = (bookNumber) => {
@@ -20,11 +21,21 @@ export default function CodewordsPanel({ id, character, onToggle }) {
 
   return (
     <div className="codewords-panel card section-anchor" id={id || "codewords-card"}>
-      <div className="card-header">
-        <span className="icon">🗝️</span>
-        <h2>Codewords</h2>
-        <span className="badge">{characterCodewords.length}</span>
-      </div>
+      <button 
+        type="button"
+        className="card-header-btn" 
+        onClick={() => setIsMainExpanded(!isMainExpanded)}
+      >
+        <div className="card-header-main">
+          <span className="icon">🗝️</span>
+          <h2>Codewords</h2>
+          <span className="badge">{characterCodewords.length}</span>
+        </div>
+        <span className="collapse-icon">{isMainExpanded ? '▼' : '▶'}</span>
+      </button>
+
+      {isMainExpanded && (
+        <div className="card-content animate-fade-in">
 
       <div className="codewords-lists">
         {booksWithWords.map(book => {
@@ -93,6 +104,8 @@ export default function CodewordsPanel({ id, character, onToggle }) {
           </div>
         )}
       </div>
+        </div>
+      )}
     </div>
   );
 }

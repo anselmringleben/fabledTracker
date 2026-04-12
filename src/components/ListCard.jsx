@@ -8,6 +8,7 @@ export default function ListCard({ title, icon, items, maxItems, onAdd, onRemove
   const [inputValue, setInputValue] = useState('');
   const [editingIndex, setEditingIndex] = useState(null);
   const [editValue, setEditValue] = useState('');
+  const [isExpanded, setIsExpanded] = useState(true);
 
   function handleAdd(e) {
     e.preventDefault();
@@ -27,17 +28,27 @@ export default function ListCard({ title, icon, items, maxItems, onAdd, onRemove
   const isAtMax = maxItems && items.length >= maxItems;
 
   return (
-    <div className="list-card card" id={id}>
-      <div className="card-header">
-        <span className="icon">{icon}</span>
-        <h2>{title}</h2>
-        {maxItems && (
-          <span className="list-count">{items.length}/{maxItems}</span>
-        )}
-        {!maxItems && (
-          <span className="list-count">{items.length}</span>
-        )}
-      </div>
+    <div className="list-card card section-anchor" id={id}>
+      <button 
+        type="button"
+        className="card-header-btn" 
+        onClick={() => setIsExpanded(!isExpanded)}
+      >
+        <div className="card-header-main">
+          <span className="icon">{icon}</span>
+          <h2>{title}</h2>
+          {maxItems && (
+            <span className="list-count">{items.length}/{maxItems}</span>
+          )}
+          {!maxItems && (
+            <span className="list-count">{items.length}</span>
+          )}
+        </div>
+        <span className="collapse-icon">{isExpanded ? '▼' : '▶'}</span>
+      </button>
+
+      {isExpanded && (
+        <div className="card-content animate-fade-in">
 
       {topContent && (
         <div className="list-card-top-content">
@@ -115,6 +126,8 @@ export default function ListCard({ title, icon, items, maxItems, onAdd, onRemove
             </li>
           ))}
         </ul>
+      )}
+        </div>
       )}
     </div>
   );

@@ -85,8 +85,8 @@ export default function StatsPanel({ id, character, onUpdate, onAddTimelineEntry
   return (
     <div className="stats-panel card section-anchor" id={id || "stats-panel"}>
       <div className="card-header">
-        <span className="icon">📋</span>
-        <h2>Character Sheet</h2>
+        <span className="icon">👤</span>
+        <h2>Stats & Rank</h2>
       </div>
 
       {/* Identity */}

@@ -5,6 +5,7 @@ import './ShipsManifest.css';
 export default function ShipsManifest({ id, character, onAddToList, onUpdateInList, onRemoveFromList, onAddTimelineEntry }) {
   const [isAdding, setIsAdding] = useState(false);
   const [editingId, setEditingId] = useState(null);
+  const [isExpanded, setIsExpanded] = useState(true);
 
   const [formData, setFormData] = useState({
     name: '',
@@ -84,11 +85,21 @@ export default function ShipsManifest({ id, character, onAddToList, onUpdateInLi
 
   return (
     <div className="ships-manifest card section-anchor" id={id || "ships-card"}>
-      <div className="card-header">
-        <span className="icon">⛵</span>
-        <h2>Ship's Manifest</h2>
-        <span className="list-count">{ships.length}</span>
-      </div>
+      <button 
+        type="button"
+        className="card-header-btn" 
+        onClick={() => setIsExpanded(!isExpanded)}
+      >
+        <div className="card-header-main">
+          <span className="icon">⛵</span>
+          <h2>Ship's Manifest</h2>
+          <span className="list-count">{ships.length}</span>
+        </div>
+        <span className="collapse-icon">{isExpanded ? '▼' : '▶'}</span>
+      </button>
+
+      {isExpanded && (
+        <div className="card-content animate-fade-in">
 
       {!isAdding && !editingId && (
         <div className="ship-actions-top">
@@ -235,6 +246,8 @@ export default function ShipsManifest({ id, character, onAddToList, onUpdateInLi
             </li>
           ))}
         </ul>
+      )}
+        </div>
       )}
     </div>
   );

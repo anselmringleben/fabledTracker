@@ -231,15 +231,45 @@ select {
   border-bottom: 1px solid var(--color-border-subtle);
 }
 
-.card-header h2 {
+.card-header-btn {
+  width: 100%;
+  text-align: left;
+  background: transparent;
+  border-bottom: 1px solid var(--color-border-subtle);
+  margin-bottom: var(--space-lg);
+  padding-bottom: var(--space-md);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+  transition: opacity var(--transition-fast);
+}
+
+.card-header-btn:hover {
+  opacity: 0.8;
+}
+
+.card-header-main {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+}
+
+.card-header h2, .card-header-btn h2 {
   font-size: 1rem;
   text-transform: uppercase;
   letter-spacing: 0.08em;
   color: var(--color-accent-light);
 }
 
-.card-header .icon {
+.card-header .icon, .card-header-btn .icon {
   font-size: 1.2rem;
+}
+
+.collapse-icon {
+  font-size: 0.8rem;
+  color: var(--color-text-muted);
+  transition: transform var(--transition-normal);
 }
 
 .btn {
