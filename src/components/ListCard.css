@@ -63,3 +63,33 @@
   font-size: 0.85rem;
   color: var(--color-text-primary);
 }
+
+.list-card-top-content {
+  padding: 0 var(--space-md);
+}
+
+/* Shards (moved from StatsPanel) */
+.shards-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--space-md);
+  background: var(--color-bg-input);
+  border: 1px solid var(--color-border-subtle);
+  border-radius: var(--radius-md);
+  margin-bottom: var(--space-md);
+}
+
+.shards-label {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--color-gold-light);
+}
+
+.shards-input {
+  width: 70px;
+  text-align: center;
+  font-weight: 700;
+  font-size: 1rem;
+  color: var(--color-gold-light);
+}

@@ -1,7 +1,60 @@
-import { ABILITIES, PROFESSIONS } from '../data/gameData';
+import { useState } from 'react';
+import { ABILITIES, PROFESSIONS, RANK_TITLES } from '../data/gameData';
 import './StatsPanel.css';
 
-export default function StatsPanel({ character, onUpdate }) {
+export default function StatsPanel({ character, onUpdate, onAddTimelineEntry }) {
+  const [diceResult, setDiceResult] = useState(null);
+
+  function handleDiceRoll() {
+    const d1 = Math.floor(Math.random() * 6) + 1;
+    const d2 = Math.floor(Math.random() * 6) + 1;
+    const total = d1 + d2;
+    setDiceResult({ d1, d2, total });
+
+    if (onAddTimelineEntry) {
+      onAddTimelineEntry(character.id, 'journeyLog', {
+        type: 'dice_roll',
+        book: character.currentBook || 1,
+        section: character.currentSection || 1,
+        note: `Rolled dice: ${d1} + ${d2} = ${total}`,
+        timestamp: new Date().toISOString()
+      });
+    }
+  }
+
+  function handleAbilityRoll(abilityKey, abilityLabel) {
+    const d1 = Math.floor(Math.random() * 6) + 1;
+    const d2 = Math.floor(Math.random() * 6) + 1;
+    const roll = d1 + d2;
+    const score = character[abilityKey] || 0;
+    const total = roll + score;
+    
+    setDiceResult({ d1, d2, total, score, label: abilityLabel });
+
+    if (onAddTimelineEntry) {
+      onAddTimelineEntry(character.id, 'journeyLog', {
+        type: 'ability_test',
+        book: character.currentBook || 1,
+        section: character.currentSection || 1,
+        note: `${abilityLabel} Test: ${total} (Roll: ${d1}+${d2} Score: ${score})`,
+        timestamp: new Date().toISOString()
+      });
+    }
+  }
+
+  function handleIncreaseRank() {
+    const newRank = character.rank + 1;
+    onUpdate(character.id, { rank: newRank });
+    if (onAddTimelineEntry) {
+      onAddTimelineEntry(character.id, 'journeyLog', {
+        type: 'rank_up',
+        book: character.currentBook || 1,
+        section: character.currentSection || 1,
+        note: `Reached Rank ${newRank}`,
+        timestamp: new Date().toISOString()
+      });
+    }
+  }
   function handleChange(field, value) {
     onUpdate(character.id, { [field]: value });
   }
@@ -49,26 +102,35 @@ export default function StatsPanel({ character, onUpdate }) {
             {PROFESSIONS.map(p => <option key={p} value={p}>{p}</option>)}
           </select>
         </div>
-        <div className="stat-field stat-field-narrow">
-          <label htmlFor="stat-rank">Rank</label>
-          <input
-            id="stat-rank"
-            type="number"
-            min="1"
-            max="20"
-            value={character.rank}
-            onChange={(e) => handleNumberChange('rank', e.target.value)}
-          />
-        </div>
-        <div className="stat-field stat-field-narrow">
-          <label htmlFor="stat-defence">Defence</label>
-          <input
-            id="stat-defence"
-            type="number"
-            min="0"
-            value={character.defence}
-            onChange={(e) => handleNumberChange('defence', e.target.value)}
-          />
+        <div className="stat-field stat-field-wide">
+          <label>Rank</label>
+          <div style={{ display: 'flex', gap: '8px', alignItems: 'center', height: '36px' }}>
+            <div style={{ display: 'flex', flexDirection: 'column', minWidth: '100px', alignItems: 'flex-start', justifyContent: 'center' }}>
+              <span style={{ 
+                fontWeight: '700', 
+                fontSize: '1.25rem', 
+                color: 'var(--color-accent-light)',
+                lineHeight: '1.1'
+              }}>
+                {character.rank}
+              </span>
+              <span style={{ 
+                fontSize: '0.65rem', 
+                color: 'var(--color-text-muted)', 
+                textTransform: 'uppercase',
+                letterSpacing: '0.04em'
+              }}>
+                {RANK_TITLES[character.rank] || 'Hero / Heroine'}
+              </span>
+            </div>
+            <button
+              className="btn btn-icon btn-secondary"
+              onClick={handleIncreaseRank}
+              title="Increase Rank"
+              aria-label="Increase Rank"
+              disabled={character.rank >= 10}
+            >+</button>
+          </div>
         </div>
       </div>
 
@@ -107,10 +169,16 @@ export default function StatsPanel({ character, onUpdate }) {
       {/* Abilities */}
       <div className="abilities-grid">
         {ABILITIES.map(({ key, label, icon }) => (
-          <div key={key} className="ability-card">
+          <div 
+            key={key} 
+            className="ability-card hover-roll" 
+            onClick={() => handleAbilityRoll(key, label)}
+            style={{ cursor: 'pointer' }}
+            title={`Roll ${label} Test`}
+          >
             <span className="ability-icon">{icon}</span>
             <span className="ability-label">{label}</span>
-            <div className="ability-controls">
+            <div className="ability-controls" onClick={e => e.stopPropagation()}>
               <button
                 className="btn btn-icon btn-secondary"
                 onClick={() => handleNumberChange(key, character[key] - 1)}
@@ -125,31 +193,61 @@ export default function StatsPanel({ character, onUpdate }) {
             </div>
           </div>
         ))}
+        {/* Defence styled identically to Abilities */}
+        <div 
+          className="ability-card hover-roll" 
+          onClick={() => handleAbilityRoll('defence', 'Defence')}
+          style={{ cursor: 'pointer' }}
+          title="Roll Defence Test"
+        >
+          <span className="ability-icon">🛡️</span>
+          <span className="ability-label">Defence</span>
+          <div className="ability-controls" onClick={e => e.stopPropagation()}>
+            <button
+              className="btn btn-icon btn-secondary"
+              onClick={() => handleNumberChange('defence', character.defence - 1)}
+              aria-label="Decrease Defence"
+            >−</button>
+            <span className="ability-value">{character.defence}</span>
+            <button
+              className="btn btn-icon btn-secondary"
+              onClick={() => handleNumberChange('defence', character.defence + 1)}
+              aria-label="Increase Defence"
+            >+</button>
+          </div>
+        </div>
       </div>
 
-      {/* Shards */}
-      <div className="shards-row">
-        <span className="shards-label">💰 Shards</span>
-        <div className="ability-controls">
-          <button
-            className="btn btn-icon btn-secondary"
-            onClick={() => handleNumberChange('shards', Math.max(0, character.shards - 1))}
-            aria-label="Decrease shards"
-          >−</button>
-          <input
-            id="stat-shards"
-            type="number"
-            min="0"
-            className="shards-input"
-            value={character.shards}
-            onChange={(e) => handleNumberChange('shards', e.target.value)}
-          />
-          <button
-            className="btn btn-icon btn-secondary"
-            onClick={() => handleNumberChange('shards', character.shards + 1)}
-            aria-label="Increase shards"
-          >+</button>
-        </div>
+      <div className="dice-roller" style={{ 
+        display: 'flex', 
+        alignItems: 'center', 
+        justifyContent: 'center', 
+        gap: 'var(--space-md)', 
+        marginTop: 'var(--space-lg)',
+        paddingTop: 'var(--space-md)',
+        borderTop: '1px solid var(--color-border-subtle)'
+      }}>
+        <button 
+          className="btn btn-primary"
+          onClick={handleDiceRoll}
+        >
+          <span style={{ fontSize: '1.2rem', marginRight: '4px' }}>🎲</span> Roll 2d6
+        </button>
+        {diceResult && (
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+            <span style={{ fontSize: '1.25rem', fontWeight: 'bold', color: 'var(--color-gold-light)' }}>
+              {diceResult.total}
+            </span>
+            <span style={{ fontSize: '0.8rem', color: 'var(--color-text-muted)' }}>
+              {diceResult.label ? `(${diceResult.d1} + ${diceResult.d2} + ${diceResult.score})` : `(${diceResult.d1} + ${diceResult.d2})`}
+            </span>
+            {diceResult.label && (
+              <span style={{ fontSize: '0.8rem', color: 'var(--color-accent-light)', textTransform: 'uppercase', letterSpacing: '0.04em' }}>
+                {diceResult.label}
+              </span>
+            )}
+          </div>
+        )}
       </div>
     </div>
   );

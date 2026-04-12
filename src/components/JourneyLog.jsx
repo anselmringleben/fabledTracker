@@ -70,11 +70,16 @@ export default function JourneyLog({ character, onUpdate, onAddEntry, onRemoveEn
               id="progress-section"
               type="number"
               min="1"
-              value={character.currentSection}
+              value={character.currentSection === '' || character.currentSection === undefined ? '' : character.currentSection}
               style={{ width: '80px', flex: '0 0 80px', textAlign: 'center' }}
               onChange={(e) => {
-                const num = parseInt(e.target.value, 10);
-                if (!isNaN(num) && num >= 0) onUpdate(character.id, { currentSection: num });
+                const val = e.target.value;
+                if (val === '') {
+                  onUpdate(character.id, { currentSection: '' });
+                } else {
+                  const num = parseInt(val, 10);
+                  if (!isNaN(num) && num >= 0) onUpdate(character.id, { currentSection: num });
+                }
               }}
             />
             <button
@@ -82,15 +87,16 @@ export default function JourneyLog({ character, onUpdate, onAddEntry, onRemoveEn
               onClick={handleLogCurrent}
               id="btn-log-current"
               style={{ flex: 1 }}
+              disabled={!character.currentSection}
             >
-              📍 Log Location
+              📍 Log
             </button>
           </div>
-          <input 
-            type="text" 
-            placeholder="Note for this timeline entry (optional)" 
-            value={quickNote} 
-            onChange={(e) => setQuickNote(e.target.value)} 
+          <input
+            type="text"
+            placeholder="Note for this timeline entry (optional)"
+            value={quickNote}
+            onChange={(e) => setQuickNote(e.target.value)}
             style={{ marginTop: '4px' }}
           />
         </div>
@@ -109,7 +115,7 @@ export default function JourneyLog({ character, onUpdate, onAddEntry, onRemoveEn
         </div>
 
         <div className="progress-field">
-          <label htmlFor="progress-notes">Quest Notes</label>
+          <label htmlFor="progress-notes">Notes</label>
           <textarea
             id="progress-notes"
             rows="3"
@@ -163,7 +169,48 @@ export default function JourneyLog({ character, onUpdate, onAddEntry, onRemoveEn
               return (
                 <li key={realIndex} className="journey-entry animate-slide-in" style={{ animationDelay: `${idx * 20}ms` }}>
                   <div className="journey-entry-marker">
-                    <span className="journey-entry-dot" />
+                    {entry.type === 'quest_start' ? (
+                      <span className="journey-entry-icon" style={{ fontSize: '1rem', marginTop: '-4px', zIndex: 2 }}>🗺️</span>
+                    ) : entry.type === 'quest_complete' ? (
+                      <span className="journey-entry-icon" style={{ fontSize: '1rem', marginTop: '-4px', zIndex: 2, position: 'relative', display: 'inline-block' }}>
+                        <span style={{ opacity: 0.8 }}>🗺️</span>
+                        <span style={{ position: 'absolute', bottom: '-2px', right: '-4px', fontSize: '0.7rem' }}>✅</span>
+                      </span>
+                    ) : entry.type === 'codeword_gained' ? (
+                      <span className="journey-entry-icon" style={{ fontSize: '0.9rem', marginTop: '-4px', zIndex: 2 }}>🗝️</span>
+                    ) : entry.type === 'codeword_lost' ? (
+                      <span className="journey-entry-icon" style={{ fontSize: '0.9rem', marginTop: '-4px', zIndex: 2, position: 'relative', display: 'inline-block' }}>
+                        <span style={{ opacity: 0.6 }}>🗝️</span>
+                        <span style={{ position: 'absolute', top: '50%', left: '-2px', right: '-2px', height: '2px', background: 'var(--color-danger, red)', transform: 'translateY(-50%) rotate(-45deg)' }} />
+                      </span>
+                    ) : entry.type === 'possession_gained' ? (
+                      <span className="journey-entry-icon" style={{ fontSize: '0.9rem', marginTop: '-4px', zIndex: 2 }}>🎒</span>
+                    ) : entry.type === 'possession_lost' ? (
+                      <span className="journey-entry-icon" style={{ fontSize: '0.9rem', marginTop: '-4px', zIndex: 2, position: 'relative', display: 'inline-block' }}>
+                        <span style={{ opacity: 0.6 }}>🎒</span>
+                        <span style={{ position: 'absolute', top: '50%', left: '-2px', right: '-2px', height: '2px', background: 'var(--color-danger, red)', transform: 'translateY(-50%) rotate(-45deg)' }} />
+                      </span>
+                    ) : entry.type === 'blessing_gained' ? (
+                      <span className="journey-entry-icon" style={{ fontSize: '1rem', marginTop: '-4px', zIndex: 2 }}>✨</span>
+                    ) : entry.type === 'blessing_lost' ? (
+                      <span className="journey-entry-icon" style={{ fontSize: '1rem', marginTop: '-4px', zIndex: 2, position: 'relative', display: 'inline-block' }}>
+                        <span style={{ opacity: 0.6 }}>✨</span>
+                        <span style={{ position: 'absolute', top: '50%', left: '-2px', right: '-2px', height: '2px', background: 'var(--color-danger, red)', transform: 'translateY(-50%) rotate(-45deg)' }} />
+                      </span>
+                    ) : entry.type === 'title_gained' ? (
+                      <span className="journey-entry-icon" style={{ fontSize: '1rem', marginTop: '-4px', zIndex: 2 }}>👑</span>
+                    ) : entry.type === 'title_lost' ? (
+                      <span className="journey-entry-icon" style={{ fontSize: '1rem', marginTop: '-4px', zIndex: 2, position: 'relative', display: 'inline-block' }}>
+                        <span style={{ opacity: 0.6 }}>👑</span>
+                        <span style={{ position: 'absolute', top: '50%', left: '-2px', right: '-2px', height: '2px', background: 'var(--color-danger, red)', transform: 'translateY(-50%) rotate(-45deg)' }} />
+                      </span>
+                    ) : entry.type === 'rank_up' ? (
+                      <span className="journey-entry-icon" style={{ fontSize: '1rem', marginTop: '-4px', zIndex: 2 }}>⭐</span>
+                    ) : entry.type === 'dice_roll' || entry.type === 'ability_test' ? (
+                      <span className="journey-entry-icon" style={{ fontSize: '1rem', marginTop: '-4px', zIndex: 2 }}>🎲</span>
+                    ) : (
+                      <span className="journey-entry-dot" />
+                    )}
                     {idx < log.length - 1 && <span className="journey-entry-line" />}
                   </div>
                   <div className="journey-entry-content">
@@ -171,20 +218,20 @@ export default function JourneyLog({ character, onUpdate, onAddEntry, onRemoveEn
                       <span className="journey-entry-location">
                         <strong>Book {entry.book}</strong> §{entry.section}
                         {editingIndex === realIndex ? (
-                          <form 
+                          <form
                             onSubmit={(e) => { e.preventDefault(); saveNoteUpdate(realIndex); }}
                             style={{ display: 'inline', marginLeft: '6px' }}
                           >
-                            <input 
-                              type="text" 
-                              value={editNote} 
-                              onChange={(e) => setEditNote(e.target.value)} 
-                              autoFocus 
+                            <input
+                              type="text"
+                              value={editNote}
+                              onChange={(e) => setEditNote(e.target.value)}
+                              autoFocus
                               onBlur={() => saveNoteUpdate(realIndex)}
                               className="journey-note-inline-edit"
-                              style={{ 
-                                padding: '2px 6px', 
-                                fontSize: '0.75rem', 
+                              style={{
+                                padding: '2px 6px',
+                                fontSize: '0.75rem',
                                 width: '140px',
                                 background: 'var(--color-bg-input)',
                                 border: '1px solid var(--color-accent)',
@@ -194,8 +241,8 @@ export default function JourneyLog({ character, onUpdate, onAddEntry, onRemoveEn
                             />
                           </form>
                         ) : (
-                          <span 
-                            className="journey-entry-note" 
+                          <span
+                            className="journey-entry-note"
                             style={{ marginLeft: '6px', cursor: 'pointer' }}
                             onClick={() => {
                               setEditingIndex(realIndex);

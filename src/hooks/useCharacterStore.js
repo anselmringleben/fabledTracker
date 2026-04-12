@@ -16,6 +16,7 @@ function loadFromStorage() {
           blessings: c.blessings || [],
           titles: c.titles || [],
           journeyLog: c.journeyLog || [],
+          quests: c.quests || [],
         }));
       }
       return data;

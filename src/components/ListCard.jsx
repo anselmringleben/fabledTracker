@@ -4,7 +4,7 @@ import './ListCard.css';
 /**
  * Reusable card for managing a list of items (possessions, codewords, blessings, titles).
  */
-export default function ListCard({ title, icon, items, maxItems, onAdd, onRemove, onEdit, placeholder, id }) {
+export default function ListCard({ title, icon, items, maxItems, onAdd, onRemove, onEdit, placeholder, id, topContent }) {
   const [inputValue, setInputValue] = useState('');
   const [editingIndex, setEditingIndex] = useState(null);
   const [editValue, setEditValue] = useState('');
@@ -38,6 +38,12 @@ export default function ListCard({ title, icon, items, maxItems, onAdd, onRemove
           <span className="list-count">{items.length}</span>
         )}
       </div>
+
+      {topContent && (
+        <div className="list-card-top-content">
+          {topContent}
+        </div>
+      )}
 
       <form className="list-add-form" onSubmit={handleAdd}>
         <input

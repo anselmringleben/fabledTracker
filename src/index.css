@@ -208,6 +208,12 @@ select {
   white-space: nowrap;
 }
 
+.btn:disabled {
+  opacity: 0.5;
+  filter: grayscale(100%);
+  cursor: not-allowed;
+}
+
 .btn-primary {
   background: linear-gradient(135deg, var(--color-accent) 0%, #7c3aed 100%);
   color: white;

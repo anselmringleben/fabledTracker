@@ -29,6 +29,9 @@ export default function EmptyState({ onCreateClick }) {
           <span>Track Codewords</span>
         </div>
       </div>
+      <p className="empty-description">
+        The Fabled Lands books are required to play the game!
+      </p>
     </div>
   );
 }
