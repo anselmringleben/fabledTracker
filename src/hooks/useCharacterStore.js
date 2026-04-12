@@ -83,56 +83,41 @@ export function useCharacterStore() {
     setState(prev => ({ ...prev, activeCharacterId: id }));
   }, []);
 
+  // Helper for updating nested list fields
+  const updateListField = useCallback((charId, field, updateFn) => {
+    setState(prev => ({
+      ...prev,
+      characters: prev.characters.map(c =>
+        c.id === charId
+          ? { ...c, [field]: updateFn(c[field] || []), updatedAt: new Date().toISOString() }
+          : c
+      ),
+    }));
+  }, []);
+
   // List-field helpers (possessions, codewords, blessings, titles)
   const addToList = useCallback((charId, field, item) => {
-    setState(prev => ({
-      ...prev,
-      characters: prev.characters.map(c =>
-        c.id === charId
-          ? { ...c, [field]: [...(c[field] || []), item], updatedAt: new Date().toISOString() }
-          : c
-      ),
-    }));
-  }, []);
+    updateListField(charId, field, (list) => [...list, item]);
+  }, [updateListField]);
 
   const removeFromList = useCallback((charId, field, index) => {
-    setState(prev => ({
-      ...prev,
-      characters: prev.characters.map(c =>
-        c.id === charId
-          ? { ...c, [field]: (c[field] || []).filter((_, i) => i !== index), updatedAt: new Date().toISOString() }
-          : c
-      ),
-    }));
-  }, []);
+    updateListField(charId, field, (list) => list.filter((_, i) => i !== index));
+  }, [updateListField]);
 
   const updateInList = useCallback((charId, field, index, newValue) => {
-    setState(prev => ({
-      ...prev,
-      characters: prev.characters.map(c => {
-        if (c.id !== charId) return c;
-        const list = [...(c[field] || [])];
-        list[index] = newValue;
-        return { ...c, [field]: list, updatedAt: new Date().toISOString() };
-      }),
-    }));
-  }, []);
+    updateListField(charId, field, (list) => {
+      const newList = [...list];
+      newList[index] = newValue;
+      return newList;
+    });
+  }, [updateListField]);
 
   const toggleInList = useCallback((charId, field, item) => {
-    setState(prev => ({
-      ...prev,
-      characters: prev.characters.map(c => {
-        if (c.id !== charId) return c;
-        const list = c[field] || [];
-        const exists = list.includes(item);
-        return {
-          ...c,
-          [field]: exists ? list.filter(x => x !== item) : [...list, item],
-          updatedAt: new Date().toISOString()
-        };
-      }),
-    }));
-  }, []);
+    updateListField(charId, field, (list) => {
+      const exists = list.includes(item);
+      return exists ? list.filter(x => x !== item) : [...list, item];
+    });
+  }, [updateListField]);
 
   const exportData = useCallback(() => {
     const data = JSON.stringify(state, null, 2);

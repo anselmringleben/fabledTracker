@@ -31,6 +31,14 @@
   margin-bottom: var(--space-sm);
 }
 
+.ship-actions-top {
+  padding: 0 var(--space-md) var(--space-sm);
+}
+
+.full-width {
+  width: 100%;
+}
+
 .ship-add-form {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -135,6 +143,10 @@
 .ship-detail-value {
   color: var(--color-text-primary);
   font-weight: 500;
+}
+
+.ship-detail-full {
+  grid-column: 1 / -1;
 }
 
 .ship-actions {

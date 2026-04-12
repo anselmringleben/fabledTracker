@@ -1,8 +1,6 @@
 import { useState } from 'react';
+import { SHIP_TYPES, CREW_QUALITIES } from '../data/gameData';
 import './ShipsManifest.css';
-
-const SHIP_TYPES = ['Barque', 'Brigantine', 'Galleon', 'Wolfship', 'Brig', 'Other'];
-const CREW_QUALITIES = ['Poor', 'Average', 'Good', 'Excellent'];
 
 export default function ShipsManifest({ character, onAddToList, onUpdateInList, onRemoveFromList, onAddTimelineEntry }) {
   const [isAdding, setIsAdding] = useState(false);
@@ -38,7 +36,7 @@ export default function ShipsManifest({ character, onAddToList, onUpdateInList, 
     if (!formData.type) return;
 
     const newShip = {
-      id: Date.now(),
+      id: crypto.randomUUID(),
       ...formData
     };
 
@@ -93,10 +91,9 @@ export default function ShipsManifest({ character, onAddToList, onUpdateInList, 
       </div>
 
       {!isAdding && !editingId && (
-        <div style={{ padding: '0 var(--space-md) var(--space-sm)' }}>
+        <div className="ship-actions-top">
           <button 
-            className="btn btn-secondary btn-sm" 
-            style={{ width: '100%' }}
+            className="btn btn-secondary btn-sm full-width" 
             onClick={() => setIsAdding(true)}
           >
             + Add Ship
@@ -205,6 +202,7 @@ export default function ShipsManifest({ character, onAddToList, onUpdateInList, 
                         className="btn btn-icon btn-secondary btn-sm"
                         onClick={() => startEdit(ship)}
                         title="Edit ship"
+                        aria-label={`Edit ${ship.name || ship.type}`}
                       >
                         ✎
                       </button>
@@ -212,6 +210,7 @@ export default function ShipsManifest({ character, onAddToList, onUpdateInList, 
                         className="btn btn-icon btn-danger btn-sm"
                         onClick={() => handleRemove(index, ship)}
                         title="Remove ship"
+                        aria-label={`Remove ${ship.name || ship.type}`}
                       >
                         ✕
                       </button>
@@ -226,7 +225,7 @@ export default function ShipsManifest({ character, onAddToList, onUpdateInList, 
                       <span className="ship-detail-label">Crew</span>
                       <span className="ship-detail-value">{ship.crew || '—'}</span>
                     </div>
-                    <div className="ship-detail-item full-width" style={{ gridColumn: '1 / -1' }}>
+                    <div className="ship-detail-item ship-detail-full">
                       <span className="ship-detail-label">Cargo</span>
                       <span className="ship-detail-value">{ship.cargo || '—'}</span>
                     </div>

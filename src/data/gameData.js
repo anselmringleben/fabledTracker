@@ -10,6 +10,9 @@ export const PROFESSIONS = [
   'Wayfarer',
 ];
 
+export const SHIP_TYPES = ['Barque', 'Brigantine', 'Galleon', 'Wolfship', 'Brig', 'Other'];
+export const CREW_QUALITIES = ['Poor', 'Average', 'Good', 'Excellent'];
+
 export const ABILITIES = [
   { key: 'charisma', label: 'Charisma', icon: '💬' },
   { key: 'combat', label: 'Combat', icon: '⚔️' },
