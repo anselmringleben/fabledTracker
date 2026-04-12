@@ -36,7 +36,7 @@ export default function StatsPanel({ id, character, onUpdate, onAddTimelineEntry
     const roll = d1 + d2;
     const score = character[abilityKey] || 0;
     const total = roll + score;
-    
+
     setDiceResult({ d1, d2, total, score, label: abilityLabel });
 
     if (onAddTimelineEntry) {
@@ -71,6 +71,15 @@ export default function StatsPanel({ id, character, onUpdate, onAddTimelineEntry
     const num = parseInt(value, 10);
     if (!isNaN(num)) {
       onUpdate(character.id, { [field]: num });
+      if (field === 'rank' && onAddTimelineEntry) {
+        onAddTimelineEntry(character.id, 'journeyLog', {
+          type: 'rank_up',
+          book: character.currentBook || 1,
+          section: character.currentSection || 1,
+          note: `Rank adjusted to ${num}: ${RANK_TITLES[num] || 'Hero / Heroine'}`,
+          timestamp: new Date().toISOString()
+        });
+      }
     }
   }
 
@@ -79,8 +88,8 @@ export default function StatsPanel({ id, character, onUpdate, onAddTimelineEntry
     : 0;
 
   const staminaColor = staminaPercent > 60 ? 'var(--color-success)' :
-                       staminaPercent > 30 ? 'var(--color-gold)' :
-                       'var(--color-danger)';
+    staminaPercent > 30 ? 'var(--color-gold)' :
+      'var(--color-danger)';
 
   return (
     <div className="stats-panel card section-anchor" id={id || "stats-panel"}>
@@ -106,38 +115,87 @@ export default function StatsPanel({ id, character, onUpdate, onAddTimelineEntry
             id="stat-profession"
             value={character.profession}
             onChange={(e) => handleChange('profession', e.target.value)}
+            disabled
+            style={{ cursor: 'not-allowed', opacity: 0.7 }}
           >
             {PROFESSIONS.map(p => <option key={p} value={p}>{p}</option>)}
           </select>
         </div>
         <div className="stat-field stat-field-wide">
-          <label>Rank</label>
-          <div style={{ display: 'flex', gap: '8px', alignItems: 'center', height: '36px' }}>
-            <div style={{ display: 'flex', flexDirection: 'column', minWidth: '100px', alignItems: 'flex-start', justifyContent: 'center' }}>
-              <span style={{ 
-                fontWeight: '700', 
-                fontSize: '1.25rem', 
+          <label htmlFor="stat-rank">Rank</label>
+          <div className="rank-selector-wrapper" style={{
+            position: 'relative',
+            background: 'var(--color-bg-input)',
+            borderRadius: 'var(--radius-md)',
+            padding: 'var(--space-sm) var(--space-md)',
+            cursor: 'pointer',
+            transition: 'all 0.2s ease',
+            minHeight: '42px',
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'center',
+            border: '1px solid var(--color-border-subtle)'
+          }}>
+            {/* The actual dropdown hidden but clickable over everything */}
+            <select
+              id="stat-rank"
+              value={character.rank}
+              onChange={(e) => handleNumberChange('rank', e.target.value)}
+              style={{
+                position: 'absolute',
+                top: 0,
+                left: 0,
+                width: '100%',
+                height: '100%',
+                opacity: 0,
+                cursor: 'pointer',
+                zIndex: 2,
+                outline: 'none'
+              }}
+            >
+              {Object.entries(RANK_TITLES).map(([num, title]) => (
+                <option key={num} value={num}>
+                  Rank {num}: {title}
+                </option>
+              ))}
+            </select>
+
+            {/* The visible display that mirrors the original look */}
+            <div className="rank-display-visual" style={{
+              display: 'flex',
+              flexDirection: 'row',
+              alignItems: 'baseline',
+              gap: 'var(--space-sm)',
+              pointerEvents: 'none'
+            }}>
+              <span style={{
+                fontWeight: '800',
+                fontSize: '1.25rem',
                 color: 'var(--color-accent-light)',
-                lineHeight: '1.1'
+                lineHeight: '1'
               }}>
                 {character.rank}
               </span>
-              <span style={{ 
-                fontSize: '0.65rem', 
-                color: 'var(--color-text-muted)', 
+              <span style={{
+                fontSize: '0.75rem',
+                color: 'var(--color-text-muted)',
                 textTransform: 'uppercase',
-                letterSpacing: '0.04em'
+                letterSpacing: '0.04em',
+                fontWeight: '600'
               }}>
                 {RANK_TITLES[character.rank] || 'Hero / Heroine'}
               </span>
             </div>
-            <button
-              className="btn btn-icon btn-secondary"
-              onClick={handleIncreaseRank}
-              title="Increase Rank"
-              aria-label="Increase Rank"
-              disabled={character.rank >= 10}
-            >+</button>
+
+            <span style={{
+              position: 'absolute',
+              right: 'var(--space-md)',
+              top: '50%',
+              transform: 'translateY(-50%)',
+              pointerEvents: 'none',
+              opacity: 0.3,
+              fontSize: '0.8rem'
+            }}>▼</span>
           </div>
         </div>
       </div>
@@ -177,9 +235,9 @@ export default function StatsPanel({ id, character, onUpdate, onAddTimelineEntry
       {/* Abilities */}
       <div className="abilities-grid">
         {ABILITIES.map(({ key, label, icon }) => (
-          <div 
-            key={key} 
-            className="ability-card hover-roll" 
+          <div
+            key={key}
+            className="ability-card hover-roll"
             onClick={() => handleAbilityRoll(key, label)}
             style={{ cursor: 'pointer' }}
             title={`Roll ${label} Test`}
@@ -202,8 +260,8 @@ export default function StatsPanel({ id, character, onUpdate, onAddTimelineEntry
           </div>
         ))}
         {/* Defence styled identically to Abilities */}
-        <div 
-          className="ability-card hover-roll" 
+        <div
+          className="ability-card hover-roll"
           onClick={() => handleAbilityRoll('defence', 'Defence')}
           style={{ cursor: 'pointer' }}
           title="Roll Defence Test"
@@ -226,16 +284,16 @@ export default function StatsPanel({ id, character, onUpdate, onAddTimelineEntry
         </div>
       </div>
 
-      <div className="dice-roller" style={{ 
-        display: 'flex', 
-        alignItems: 'center', 
-        justifyContent: 'center', 
-        gap: 'var(--space-md)', 
+      <div className="dice-roller" style={{
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        gap: 'var(--space-md)',
         marginTop: 'var(--space-lg)',
         paddingTop: 'var(--space-md)',
         borderTop: '1px solid var(--color-border-subtle)'
       }}>
-        <button 
+        <button
           className={`btn btn-primary ${isRolling ? 'animate-roll' : ''}`}
           onClick={handleDiceRoll}
         >
