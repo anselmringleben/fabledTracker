@@ -107,6 +107,11 @@ export default function StatsPanel({ id, character, onUpdate, onAddTimelineEntry
             type="text"
             value={character.name}
             onChange={(e) => handleChange('name', e.target.value)}
+            style={{ 
+              minHeight: '42px', 
+              borderRadius: 'var(--radius-md)',
+              borderColor: 'var(--color-border-subtle)'
+            }}
           />
         </div>
         <div className="stat-field">
@@ -116,7 +121,13 @@ export default function StatsPanel({ id, character, onUpdate, onAddTimelineEntry
             value={character.profession}
             onChange={(e) => handleChange('profession', e.target.value)}
             disabled
-            style={{ cursor: 'not-allowed', opacity: 0.7 }}
+            style={{ 
+              cursor: 'not-allowed', 
+              opacity: 0.7,
+              minHeight: '42px',
+              borderRadius: 'var(--radius-md)',
+              borderColor: 'var(--color-border-subtle)'
+            }}
           >
             {PROFESSIONS.map(p => <option key={p} value={p}>{p}</option>)}
           </select>
