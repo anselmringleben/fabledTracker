@@ -8,6 +8,7 @@ import CodewordsPanel from './components/CodewordsPanel';
 import QuestsPanel from './components/QuestsPanel';
 import JourneyLog from './components/JourneyLog';
 import DangerZone from './components/DangerZone';
+import ShipsManifest from './components/ShipsManifest';
 import './App.css';
 
 function App() {
@@ -245,6 +246,14 @@ function App() {
                 onRemove={handleBlessingRemove}
                 onEdit={(index, newValue) => updateInList(activeCharacter.id, 'blessings', index, newValue)}
                 placeholder="Add blessing…"
+              />
+
+              <ShipsManifest
+                character={activeCharacter}
+                onAddToList={addToList}
+                onUpdateInList={updateInList}
+                onRemoveFromList={removeFromList}
+                onAddTimelineEntry={addToList}
               />
 
               <ListCard

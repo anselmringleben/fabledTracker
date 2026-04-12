@@ -204,6 +204,13 @@ export default function JourneyLog({ character, onUpdate, onAddEntry, onRemoveEn
                         <span style={{ opacity: 0.6 }}>👑</span>
                         <span style={{ position: 'absolute', top: '50%', left: '-2px', right: '-2px', height: '2px', background: 'var(--color-danger, red)', transform: 'translateY(-50%) rotate(-45deg)' }} />
                       </span>
+                    ) : entry.type === 'ship_acquired' ? (
+                      <span className="journey-entry-icon" style={{ fontSize: '1rem', marginTop: '-4px', zIndex: 2 }}>⛵</span>
+                    ) : entry.type === 'ship_lost' ? (
+                      <span className="journey-entry-icon" style={{ fontSize: '1rem', marginTop: '-4px', zIndex: 2, position: 'relative', display: 'inline-block' }}>
+                        <span style={{ opacity: 0.6 }}>⛵</span>
+                        <span style={{ position: 'absolute', top: '50%', left: '-2px', right: '-2px', height: '2px', background: 'var(--color-danger, red)', transform: 'translateY(-50%) rotate(-45deg)' }} />
+                      </span>
                     ) : entry.type === 'rank_up' ? (
                       <span className="journey-entry-icon" style={{ fontSize: '1rem', marginTop: '-4px', zIndex: 2 }}>⭐</span>
                     ) : entry.type === 'dice_roll' || entry.type === 'ability_test' ? (

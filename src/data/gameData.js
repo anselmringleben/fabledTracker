@@ -117,6 +117,8 @@ export function createCharacter(name = '', profession = 'Warrior') {
     currentBook: 1,
     currentSection: 1,
     journeyLog: [],
+    quests: [],
+    ships: [],
     notes: '',
     createdAt: new Date().toISOString(),
     updatedAt: new Date().toISOString(),

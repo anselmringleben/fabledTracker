@@ -17,6 +17,7 @@ function loadFromStorage() {
           titles: c.titles || [],
           journeyLog: c.journeyLog || [],
           quests: c.quests || [],
+          ships: c.ships || [],
         }));
       }
       return data;
