@@ -289,6 +289,14 @@ function App() {
         }}>
           The <strong>Fabled Lands</strong> gamebook series was created by Dave Morris and Jamie Thomson. All rights to the Fabled Lands universe belong to their respective creators and publishers. This page is an independent, fan-made tool.
         </p>
+        <p className="version-info" style={{ 
+          fontSize: '0.65rem', 
+          opacity: 0.4, 
+          marginTop: '8px',
+          letterSpacing: '0.02em'
+        }}>
+          Revision: {__GIT_REV__} | Updated: {__BUILD_DATE__}
+        </p>
       </footer>
     </div>
   );
